@@ -15,6 +15,8 @@ class Activity extends Model
         'date_from',
         'date_to',
         'hours',
+        'activity_type_id',
+'request_source_id',
     ];
 
     protected $casts = [
@@ -34,4 +36,14 @@ class Activity extends Model
         return $this->belongsToMany(Vehicle::class)
             ->withTimestamps();
     }
+    public function activityType()
+{
+    return $this->belongsTo(\App\Models\ActivityType::class);
+}
+
+public function requestSource()
+{
+    return $this->belongsTo(\App\Models\RequestSource::class);
+}
+
 }

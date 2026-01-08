@@ -13,8 +13,9 @@ use Filament\Tables\Table;
 class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $modelLabel = 'Attività';
+    protected static ?string $pluralModelLabel = 'Attività';
+    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
 
     public static function form(Form $form): Form
     {
@@ -70,7 +71,42 @@ class ActivityResource extends Resource
                     ->rules(['array', 'max:2'])
                     ->helperText('Massimo 2 mezzi per attività.')
                     ->columnSpanFull(),
-            ]);
+            Forms\Components\Select::make('activity_type_id')
+    ->label('Tipo di Attività')
+    ->relationship('activityType', 'name', fn ($query) => $query->where('is_active', true)->orderBy('sort_order')->orderBy('name'))
+    ->required()
+    ->searchable()
+    ->preload()
+    ->native(false)
+    ->createOptionForm([
+        Forms\Components\TextInput::make('name')->label('Nome')->required()->maxLength(255),
+        Forms\Components\Toggle::make('is_active')->label('Attivo')->default(true),
+        Forms\Components\TextInput::make('sort_order')->label('Ordine')->numeric()->default(0),
+    ])
+    ->editOptionForm([
+        Forms\Components\TextInput::make('name')->label('Nome')->required()->maxLength(255),
+        Forms\Components\Toggle::make('is_active')->label('Attivo'),
+        Forms\Components\TextInput::make('sort_order')->label('Ordine')->numeric(),
+    ]),
+
+Forms\Components\Select::make('request_source_id')
+    ->label('Richiesta di intervento pervenuta da')
+    ->relationship('requestSource', 'name', fn ($query) => $query->where('is_active', true)->orderBy('sort_order')->orderBy('name'))
+    ->required()
+    ->searchable()
+    ->preload()
+    ->native(false)
+    ->createOptionForm([
+        Forms\Components\TextInput::make('name')->label('Nome')->required()->maxLength(255),
+        Forms\Components\Toggle::make('is_active')->label('Attivo')->default(true),
+        Forms\Components\TextInput::make('sort_order')->label('Ordine')->numeric()->default(0),
+    ])
+    ->editOptionForm([
+        Forms\Components\TextInput::make('name')->label('Nome')->required()->maxLength(255),
+        Forms\Components\Toggle::make('is_active')->label('Attivo'),
+        Forms\Components\TextInput::make('sort_order')->label('Ordine')->numeric(),
+    ]),
+                ]);
     }
 
     public static function table(Table $table): Table

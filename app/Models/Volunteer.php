@@ -14,4 +14,8 @@ class Volunteer extends Model
             ->withTimestamps()
             ->withPivot(['role', 'hours_on_activity']);
     }
+    public function base()
+{
+    return $this->belongsTo(\App\Models\Base::class);
+}
 }

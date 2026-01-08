@@ -19,4 +19,8 @@ class Vehicle extends Model
         return $this->belongsToMany(Activity::class)
             ->withTimestamps();
     }
+    public function base()
+{
+    return $this->belongsTo(\App\Models\Base::class);
+}
 }
