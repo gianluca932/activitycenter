@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Filament\Resources;
+use App\Filament\Resources\ActivityResource\RelationManagers;
 
 use App\Filament\Resources\ActivityResource\Pages;
 use App\Models\Activity;
@@ -9,6 +10,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
+
+
 
 class ActivityResource extends Resource
 {
@@ -44,6 +48,7 @@ class ActivityResource extends Resource
                     ->numeric()
                     ->helperText('Opzionale: puoi calcolarle a mano (per ora).'),
 
+                    
                 // ✅ Volunteers relation (max 10)
                 Forms\Components\Select::make('volunteers')
                     ->label('Volontari')
@@ -152,6 +157,7 @@ Forms\Components\Select::make('request_source_id')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
 
+                    
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
@@ -160,6 +166,15 @@ Forms\Components\Select::make('request_source_id')
             ->actions([
                 Tables\Actions\EditAction::make(),
             ])
+            ->actions([
+    Action::make('export_foglio_servizio')
+        ->label('Esporta foglio di servizio')
+        ->icon('heroicon-o-arrow-down-tray')
+        ->url(fn (Activity $record) => route('pdf.foglio-servizio', $record))
+        ->openUrlInNewTab(),
+
+    Tables\Actions\EditAction::make(),
+])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -167,14 +182,12 @@ Forms\Components\Select::make('request_source_id')
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            // Lasciamo vuoto: stiamo gestendo le relazioni direttamente nel form.
-            // In alternativa si possono usare RelationManagers.
-        ];
-    }
-
+public static function getRelations(): array
+{
+    return [
+        RelationManagers\VolunteersRelationManager::class,
+    ];
+}
     public static function getPages(): array
     {
         return [

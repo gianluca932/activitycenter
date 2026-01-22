@@ -28,7 +28,7 @@ class Activity extends Model
     {
         return $this->belongsToMany(Volunteer::class)
             ->withTimestamps()
-            ->withPivot(['role', 'hours_on_activity']);
+        ->withPivot(['role', 'hours_on_activity', 'art39']);
     }
 
     public function vehicles(): BelongsToMany
