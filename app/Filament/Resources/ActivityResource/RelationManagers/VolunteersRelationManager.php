@@ -28,13 +28,7 @@ class VolunteersRelationManager extends RelationManager
                 ->label('Art. 39')
                 ->default(false),
 
-            Forms\Components\TextInput::make('role')
-                ->label('Ruolo')
-                ->maxLength(255),
-
-            Forms\Components\TextInput::make('hours_on_activity')
-                ->label('Ore su attività')
-                ->numeric(),
+     
         ]);
     }
 
@@ -68,14 +62,6 @@ class VolunteersRelationManager extends RelationManager
                     ->boolean()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('pivot.role')
-                    ->label('Ruolo')
-                    ->toggleable(isToggledHiddenByDefault: true),
-
-                Tables\Columns\TextColumn::make('pivot.hours_on_activity')
-                    ->label('Ore')
-                    ->numeric()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->headerActions([
                 // ✅ qui aggiungi volontari esistenti
@@ -91,14 +77,6 @@ class VolunteersRelationManager extends RelationManager
                             Forms\Components\Toggle::make('art39')
                                 ->label('Art. 39')
                                 ->default(false),
-
-                            Forms\Components\TextInput::make('role')
-                                ->label('Ruolo')
-                                ->maxLength(255),
-
-                            Forms\Components\TextInput::make('hours_on_activity')
-                                ->label('Ore su attività')
-                                ->numeric(),
                         ];
                     }),
             ])

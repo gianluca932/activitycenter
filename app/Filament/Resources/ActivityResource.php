@@ -48,34 +48,7 @@ class ActivityResource extends Resource
                     ->numeric()
                     ->helperText('Opzionale: puoi calcolarle a mano (per ora).'),
 
-                    
-                // ✅ Volunteers relation (max 10)
-                Forms\Components\Select::make('volunteers')
-                    ->label('Volontari')
-                    ->relationship('volunteers', 'last_name')
-                    ->getOptionLabelFromRecordUsing(
-                        fn ($record) => "{$record->last_name} {$record->first_name} ({$record->tax_code})"
-                    )
-                    ->multiple()
-                    ->preload()
-                    ->searchable()
-                    ->rules(['array', 'max:10'])
-                    ->helperText('Massimo 10 volontari per attività.')
-                    ->columnSpanFull(),
 
-                // ✅ Vehicles relation (max 2)
-                Forms\Components\Select::make('vehicles')
-                    ->label('Mezzi')
-                    ->relationship('vehicles', 'plate')
-                    ->getOptionLabelFromRecordUsing(
-                        fn ($record) => "{$record->plate} - {$record->brand}"
-                    )
-                    ->multiple()
-                    ->preload()
-                    ->searchable()
-                    ->rules(['array', 'max:2'])
-                    ->helperText('Massimo 2 mezzi per attività.')
-                    ->columnSpanFull(),
             Forms\Components\Select::make('activity_type_id')
     ->label('Tipo di Attività')
     ->relationship('activityType', 'name', fn ($query) => $query->where('is_active', true)->orderBy('sort_order')->orderBy('name'))
@@ -186,6 +159,7 @@ public static function getRelations(): array
 {
     return [
         RelationManagers\VolunteersRelationManager::class,
+        RelationManagers\VehiclesRelationManager::class,
     ];
 }
     public static function getPages(): array

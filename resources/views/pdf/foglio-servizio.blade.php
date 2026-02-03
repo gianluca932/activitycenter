@@ -15,27 +15,31 @@
 </head>
 <body>
 
-<div class="header">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <div>
-            {{-- Put your logo in public/images/logo-left.png --}}
-            <img src="{{ public_path('images/logo-left.png') }}" style="height:60px;">
-        </div>
-        <div>
-            <div><strong>Giunta Regionale della Campania</strong></div>
-            <div>Direzione Generale 18 - Lavori Pubblici e Protezione Civile</div>
-            <div><strong>STAFF Protezione Civile Emergenza e Post-Emergenza</strong></div>
-        </div>
-        <div>
-            {{-- Put your logo in public/images/logo-right.png --}}
-            <img src="{{ public_path('images/logo-right.png') }}" style="height:60px;">
-        </div>
+<div class="header" style="position: relative; margin-bottom: 20px;">
+
+    <!-- Logo Regione (SINISTRA) -->
+    <div style="position:absolute; left:0; top:0;">
+        <img src="{{ public_path('images/logo-campania.png') }}" style="height:70px;">
     </div>
 
-    <div class="title">ELENCO VOLONTARI IMPIEGATI</div>
-    <div>Giorno di impiego: {{ $day }}</div>
+    <!-- Logo Associazione (DESTRA) -->
+    <div style="position:absolute; right:0; top:0;">
+        <img src="{{ public_path('images/logo-white.svg') }}" style="height:70px;">
+    </div>
+
+    <!-- Testo centrale -->
+    <div style="text-align:center;">
+        <div><strong>Giunta Regionale della Campania</strong></div>
+        <div>Direzione Generale 18 - Lavori Pubblici e Protezione Civile</div>
+        <div><strong>STAFF Protezione Civile Emergenza e Post-Emergenza</strong></div>
+    </div>
+
 </div>
 
+<div class="title">ELENCO VOLONTARI IMPIEGATI</div>
+<div style="text-align:center; margin-bottom: 12px;">
+    Giorno di impiego: {{ $day }}
+</div>
 <table class="mt">
     <thead>
         <tr>
@@ -80,7 +84,7 @@
         @foreach($vehicles as $veh)
             <tr>
                 <td>{{ $veh->type ?? '' }}</td>
-                <td>{{ ($veh->brand ?? '') . ' ' . ($veh->model ?? '') }}</td>
+                <td>{{  $veh->model }}</td>
                 <td>{{ $veh->plate }}</td>
             </tr>
         @endforeach

@@ -28,14 +28,13 @@ class Activity extends Model
     {
         return $this->belongsToMany(Volunteer::class)
             ->withTimestamps()
-        ->withPivot(['role', 'hours_on_activity', 'art39']);
+        ->withPivot(['art39']);
     }
 
-    public function vehicles(): BelongsToMany
-    {
-        return $this->belongsToMany(Vehicle::class)
-            ->withTimestamps();
-    }
+public function vehicles()
+{
+    return $this->belongsToMany(\App\Models\Vehicle::class)->withTimestamps();
+}
     public function activityType()
 {
     return $this->belongsTo(\App\Models\ActivityType::class);

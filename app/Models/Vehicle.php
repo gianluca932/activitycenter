@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Vehicle extends Model
 {
-    protected $fillable = ['plate', 'brand', 'model', 'revision_expires_at', 'insurance_expires_at'];
-
+protected $fillable = [
+    'plate',
+    'type',
+    'model',
+    'revision_expires_at',
+    'insurance_expires_at',
+    'base_id',
+];
     protected $casts = [
         'revision_expires_at' => 'date',
         'insurance_expires_at' => 'date',

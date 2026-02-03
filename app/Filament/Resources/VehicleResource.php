@@ -27,8 +27,8 @@ class VehicleResource extends Resource
                     ->required()
                     ->maxLength(20),
 
-                Forms\Components\TextInput::make('brand')
-                    ->label('Marca')
+                Forms\Components\TextInput::make('type')
+                    ->label('Tipo')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('model')
@@ -84,10 +84,11 @@ class VehicleResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('brand')
-                    ->label('Marca')
-                    ->searchable()
-                    ->sortable(),
+            Tables\Columns\TextColumn::make('type')
+    ->label('Tipo')
+    ->searchable()
+    ->sortable(),
+
                 Tables\Columns\TextColumn::make('model')
                     ->label('Modello')
                     ->searchable()

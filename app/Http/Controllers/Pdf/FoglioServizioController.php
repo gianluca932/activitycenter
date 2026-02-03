@@ -14,6 +14,13 @@ class FoglioServizioController extends Controller
 
         $day = $activity->date_from?->format('d/m/Y') ?? now()->format('d/m/Y');
 
+        $activity->load([
+    'volunteers.base',
+    'vehicles.base',
+    'activityType',
+    'requestSource',
+]);
+
         $pdf = Pdf::loadView('pdf.foglio-servizio', [
             'activity' => $activity,
             'day' => $day,
@@ -23,6 +30,7 @@ class FoglioServizioController extends Controller
 
         $filename = 'foglio-servizio-activity-' . $activity->id . '.pdf';
 
+        
         return $pdf->download($filename);
     }
 }

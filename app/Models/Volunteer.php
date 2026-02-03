@@ -12,7 +12,7 @@ class Volunteer extends Model
     {
         return $this->belongsToMany(Activity::class)
             ->withTimestamps()
-        ->withPivot(['role', 'hours_on_activity', 'art39']);
+        ->withPivot([ 'art39']);
     }
     public function base()
 {
