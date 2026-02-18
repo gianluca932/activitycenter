@@ -35,5 +35,6 @@ RUN mkdir -p storage/logs bootstrap/cache \
 EXPOSE 10000
 
 CMD php artisan migrate --force && \
+    php artisan db:seed --force && \
     php-fpm -D && \
     nginx -g "daemon off;"
