@@ -15,7 +15,6 @@ services:
         value: debug
 
       - key: APP_KEY
-        generateValue: true
 
       - key: DB_CONNECTION
         value: pgsql
