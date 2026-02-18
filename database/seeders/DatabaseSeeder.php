@@ -19,13 +19,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // User::factory(10)->create();
-        User::updateOrCreate(
+     if (app()->environment('local')) {
+    User::updateOrCreate(
         ['email' => 'admin@admin.com'],
         [
             'name' => 'Admin',
             'password' => 'password123',
         ]
     );
+}
     }
 }
 
