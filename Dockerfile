@@ -20,14 +20,17 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader -vvv
 
-RUN cp .env.example .env || true
-RUN php artisan key:generate || true
+RUN rm -f .env
 
 # nginx config
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
 # permissions
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+RUN mkdir -p storage/logs bootstrap/cache \
+ && chown -R www-data:www-data storage bootstrap/cache \
+ && chmod -R 775 storage bootstrap/cache
 
 EXPOSE 10000
 

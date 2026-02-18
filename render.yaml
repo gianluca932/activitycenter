@@ -8,9 +8,15 @@ services:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
-        value: false
+        value: true
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: LOG_LEVEL
+        value: debug
+
       - key: APP_KEY
         generateValue: true
+
       - key: DB_CONNECTION
         value: pgsql
       - key: DB_HOST
