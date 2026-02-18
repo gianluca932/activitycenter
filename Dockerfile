@@ -1,12 +1,15 @@
-FROM php:8.3-fpm
+FROM php:8.2-fpm
 
 # system deps
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libpq-dev libonig-dev libxml2-dev \
-    libzip-dev nginx supervisor
+    libzip-dev nginx supervisor \
+    libicu-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev
 
 # PHP extensions
-RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath zip
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+ && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath zip intl gd
+
 
 # composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -15,7 +18,7 @@ WORKDIR /var/www
 
 COPY . .
 
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader -vvv
 
 RUN cp .env.example .env || true
 RUN php artisan key:generate || true
