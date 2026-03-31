@@ -155,6 +155,13 @@ class VolunteerResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->headerActions([
+                Tables\Actions\Action::make('download_template')
+                    ->label('Scarica Template Excel')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->color('info')
+                    ->action(function () {
+                        return Excel::download(new VolunteersTemplateExport(), 'template_volontari.xlsx');
+                    }),
                 Tables\Actions\Action::make('import')
                     ->label('Importa da Excel')
                     ->icon('heroicon-o-arrow-up-tray')
@@ -171,7 +178,7 @@ class VolunteerResource extends Resource
                             ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
                             ->required(),
                     ])
-                    ->modalDescription('Scarica il [template Excel](scarica-template) per compilare correttamente il file.')
+                    ->modalDescription('Seleziona la sede e carica un file Excel con i dati dei volontari.')
                     ->action(function (array $data) {
                         $filePath = storage_path('app/public/' . $data['file']);
                         $baseId = $data['base_id'];
@@ -180,16 +187,15 @@ class VolunteerResource extends Resource
                         $import = new VolunteersImport($baseId);
                         Excel::import($import, $filePath);
 
-                $body = "Importati: {$import->importedCount}. \n\n Skippati: {$import->skippedCount}.";
+                        $body = "Importati: {$import->importedCount}. \n\n Skippati: {$import->skippedCount}.";
 
-if (! empty($import->errors)) {
-    $body .= "\n\n" . implode("\n", array_slice($import->errors, 0, 5));
+                        if (! empty($import->errors)) {
+                            $body .= "\n\n" . implode("\n", array_slice($import->errors, 0, 5));
 
-    if (count($import->errors) > 5) {
-        $body .= "\n...and more.";
-    }
-}
-
+                            if (count($import->errors) > 5) {
+                                $body .= "\n...and more.";
+                            }
+                        }
 
                         // Notifica di successo con dettagli
                         Notification::make()
@@ -199,16 +205,6 @@ if (! empty($import->errors)) {
                             ->send();
                     })
                     ->modalHeading('Importa Volontari da Excel')
-                    ->modalActions([
-                        Tables\Actions\Action::make('download_template')
-                            ->label('Scarica Template Excel')
-                            ->icon('heroicon-o-arrow-down-tray')
-                            ->color('info')
-                            ->action(function () {
-                                return Excel::download(new VolunteersTemplateExport(), 'template_volontari.xlsx');
-                            }),
-                    ])
-                    ->modalDescription('Seleziona la sede e carica un file Excel con i dati dei volontari.')
                     ->modalSubmitActionLabel('Importa'),
             ])
             ->actions([
