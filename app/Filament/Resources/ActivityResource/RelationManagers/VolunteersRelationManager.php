@@ -37,13 +37,8 @@ class VolunteersRelationManager extends RelationManager
         return $table
             ->columns([
                 // colonne del Volunteer
-                Tables\Columns\TextColumn::make('last_name')
-                    ->label('Cognome')
-                    ->searchable()
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('first_name')
-                    ->label('Nome')
+                Tables\Columns\TextColumn::make('fullname')
+                    ->label('Nome e Cognome')
                     ->searchable()
                     ->sortable(),
 
@@ -67,8 +62,8 @@ class VolunteersRelationManager extends RelationManager
                 // ✅ qui aggiungi volontari esistenti
                 Tables\Actions\AttachAction::make()
                     ->label('Aggiungi volontario')
-                    ->recordSelectSearchColumns(['first_name', 'last_name', 'tax_code'])
-                    ->recordTitle(fn ($record) => "{$record->last_name} {$record->first_name} ({$record->tax_code})")
+                    ->recordSelectSearchColumns(['fullname', 'tax_code'])
+                    ->recordTitle(fn ($record) => "{$record->fullname} ({$record->tax_code})")
                     ->preloadRecordSelect()
                     ->form(function (Tables\Actions\AttachAction $action): array {
                         return [

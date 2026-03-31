@@ -54,14 +54,14 @@
         @foreach($volunteers as $i => $v)
             <tr>
                 <td>{{ $i + 1 }}</td>
-                <td>{{ $v->last_name }} {{ $v->first_name }}</td>
+                <td>{{ $v->fullname }} </td>
                 <td>{{ $v->tax_code }}</td>
                 <td></td>
                 <td>{{ $v->pivot->art39 ? 'SI' : 'NO' }}</td>
             </tr>
         @endforeach
-        {{-- Optionally pad to 13 rows like the form --}}
-        @for($k = count($volunteers); $k < 13; $k++)
+        {{-- Optionally pad to 5 rows like the form --}}
+        @for($k = count($volunteers); $k < 3; $k++)
             <tr>
                 <td>{{ $k + 1 }}</td>
                 <td></td><td></td><td></td><td></td>

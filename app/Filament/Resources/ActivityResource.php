@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
+use Filament\Notifications\Notification;
 
 
 
@@ -25,13 +26,6 @@ class ActivityResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('category')
-                    ->required()
-                    ->maxLength(255),
-
-                Forms\Components\TextInput::make('requested_by')
-                    ->maxLength(255),
-
                 Forms\Components\Textarea::make('short_description')
                     ->required()
                     ->maxLength(255)
@@ -91,12 +85,6 @@ Forms\Components\Select::make('request_source_id')
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('category')
-                    ->searchable(),
-
-                Tables\Columns\TextColumn::make('requested_by')
-                    ->searchable(),
-
                 Tables\Columns\TextColumn::make('short_description')
                     ->limit(40)
                     ->tooltip(fn ($record) => $record->short_description)
@@ -114,17 +102,6 @@ Forms\Components\Select::make('request_source_id')
                     ->numeric()
                     ->sortable(),
 
-                // ✅ quick visibility
-                Tables\Columns\TextColumn::make('volunteers_count')
-                    ->counts('volunteers')
-                    ->label('Volontari')
-                    ->sortable(),
-
-                Tables\Columns\TextColumn::make('vehicles_count')
-                    ->counts('vehicles')
-                    ->label('Mezzi')
-                    ->sortable(),
-
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -137,16 +114,32 @@ Forms\Components\Select::make('request_source_id')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->actions([
     Action::make('export_foglio_servizio')
         ->label('Esporta foglio di servizio')
         ->icon('heroicon-o-arrow-down-tray')
         ->url(fn (Activity $record) => route('pdf.foglio-servizio', $record))
         ->openUrlInNewTab(),
 
+    Action::make('duplicate')
+        ->label('Duplica')
+        ->icon('heroicon-o-document-duplicate')
+        ->action(function (Activity $record) {
+            $duplicate = $record->replicate();
+            $duplicate->save();
+
+            // Duplica le relazioni
+            $duplicate->volunteers()->attach($record->volunteers->pluck('id'));
+            $duplicate->vehicles()->attach($record->vehicles->pluck('id'));
+
+            Notification::make()
+                ->title('Attività duplicata con successo')
+                ->success()
+                ->send();
+        }),
+
     Tables\Actions\EditAction::make(),
+
+    Tables\Actions\DeleteAction::make(),
 ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

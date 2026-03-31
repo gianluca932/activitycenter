@@ -17,6 +17,10 @@ return new class extends Migration {
             $table->dateTime('date_to');
 
             $table->decimal('hours', 6, 2)->nullable(); // opzionale v1
+
+            $table->foreignId('activity_type_id')->constrained('activity_types');
+            $table->foreignId('request_source_id')->constrained('request_sources');
+
             $table->timestamps();
 
             $table->index(['category']);

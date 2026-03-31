@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Volunteer extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'tax_code', 'base'];
+    protected $fillable = ['fullname', 'tax_code', 'base_id', 'luogo_di_nascita', 'numero_iscrizione_regionale', 'residenza', 'cellulare', 'email', 'patenti'];
 
     public function activities(): BelongsToMany
     {

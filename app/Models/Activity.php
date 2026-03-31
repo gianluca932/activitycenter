@@ -9,14 +9,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Activity extends Model
 {
     protected $fillable = [
-        'category',
-        'requested_by',
         'short_description',
         'date_from',
         'date_to',
         'hours',
         'activity_type_id',
-'request_source_id',
+        'request_source_id',
     ];
 
     protected $casts = [
